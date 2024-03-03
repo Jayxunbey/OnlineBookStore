@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"
+  xmlns:th="https://www.thymeleaf.org"
+>
+  <head>
+    <meta charset="utf-8">
+    <title>Book Store</title>
+    <link rel="stylesheet" href="../static/css/style_login.css">
+  </head>
+  <body>
+    <div class="container">
+
+      <div class="navbar">
+        <div id="navbar-login-text">
+          Online Book Store
+        </div>
+        <div id = "sign-right-block">
+          
+
+
+           <div id="sign-up-navbar" >
+             <a href="/auth/signup" style="text-decoration: none">
+               sign up
+             </a>
+
+           </div>
+      </div>
+        </div>
+
+
+
+      <div class="container-body" >
+        
+        <div id="sign-forms" th:object="${logdto}" >
+
+          <p style="background-color: #ff9e3c" th:text="${cannotRegister}"></p>
+
+          <form id="log-in-form"   action="/auth/login"  method="post">
+
+              <div>
+                <h1 th:text="#{login}">Log in</h1>
+              </div>
+              <div id="input-values-block-login">
+                <input class="input-form" type="text" th:field="*{username}" name="username" placeholder="Username or Email Address">
+                   <p style="background-color: #ffa50f" class="error" th:errors="*{username}"></p>
+                <input class="input-form" type="password"   th:field="*{password}" name="password" placeholder="Password">
+                   <p style="background-color: #ffa50f" class="error" th:errors="*{password}"></p>
+                <input type="submit" id="subm-btn-form-login" name="submit" value="login">
+              </div>
+            </form>
+        </div>
+
+
+        </div>
+
+      <div class="footer">
+
+        <div id="footer-created-by-jayxunbey">
+          Created by Jayxunbey
+        </div>
+        
+      </div>
+
+    </div>
+  </body>
+</html>

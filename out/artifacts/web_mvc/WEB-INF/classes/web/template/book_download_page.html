@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"
+  xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Book Store</title>
+    <link rel="stylesheet" href="/static/css/style_book_download_page.css">
+</head>
+<body>
+<div class="container">
+
+    <div class="navbar">
+        <div id="navbar-left-block">
+            <div id="navbar-first-text" >Online Book Store</div>
+
+            <div id="other-page-referals">
+                <a style="text-decoration: none" href="/books" >
+                <div class ="page-referals-block">
+                    Download books
+                </div>
+                </a>
+                <div class ="page-referals-block-div" >
+                    |
+                </div>
+                <a style="text-decoration: none" href="/upload" >
+                <div class ="page-referals-block">
+                    Upload book
+                </div>
+                </a>
+
+            </div>
+        </div>
+        <div id = "sign-right-block">
+
+            <div id="user-name-navbar-photo">
+                <img  width="35" height="35" style="border-radius: 50%;" src="/static/images/user_64.png" alt="user_photo">
+            </div>
+            <div id="user-name-navbar-text">somebody</div>
+        </div>
+    </div>
+
+
+
+    <div class="container-body" id="container-body">
+
+        <div  class="books-block" id="books-block">
+
+            <div class="books-block-book-body" th:object="${book}">
+                <div class="books-block-book-body-info">
+                    <div class="books-block-book-body-block-img">
+                        <img class="books-block-book-body-block-img-value" th:src="*{getPhoto().getFileAbsolutePath()}" height="250px" style="max-width: 300px;" width="auto"  alt="book photo" >
+                    </div>
+                    <div class="books-block-book-body-about-down" >
+                        <div class="books-block-book-body-about">
+                            <div>
+                                <h3 class="books-block-book-body-about-name">Name:</h3>
+                                <h3 class="books-block-book-body-about-genre">Genre:</h3>
+                                <h3 class="books-block-book-body-about-year">Year:</h3>
+                                <h3 class="books-block-book-body-about-year">Size:</h3>
+                            </div>
+                            <div>
+                                <p class="books-block-book-body-about-name-value"  th:text="*{getName()}">Atom Odatlar</p>
+                                <p class="books-block-book-body-about-genre-value" th:text="*{getGenre()}">Ilmlar</p>
+                                <p class="books-block-book-body-about-year-value"  th:text="*{getYear()}">2016</p>
+                                <p class="books-block-book-body-about-size-value" th:text="*{getFile().getSize()}" > mb</p>
+                            </div>
+                        </div>
+                        <a th:href="@{/books/download/file(filename=*{getId()})}" style="text-decoration: none">
+                        <div class="books-block-book-body-down" onclick='backgroundColor = red'>
+                            <img id="down-img" src="/static/images/download_logo.png" width="30" height="30" alt="downBtn">
+                            Download
+                        </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+
+    </div>
+
+    <div class="footer">
+
+        <div id="footer-created-by-jayxunbey">
+            Created by Jayxunbey
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
