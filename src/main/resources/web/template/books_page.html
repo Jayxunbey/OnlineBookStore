@@ -2,7 +2,9 @@
 <html lang="en"
       dir="ltr"
       xmlns:th="https://www.thymeleaf.org/"
->
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+
   <head>
     <meta charset="utf-8">
     <title>Book Store</title>
@@ -21,7 +23,6 @@
             Download books
             </div></a>
 
-
             <div class ="page-referals-block-div" >
               |
               </div>
@@ -31,6 +32,24 @@
             </div>
               </a>
 
+              <div sec:authorize="hasRole('ADMIN')" class ="page-referals-block-div" >
+                  |
+              </div>
+
+              <a style="text-decoration: none" href="/books" >
+                  <div sec:authorize="hasRole('ADMIN')" class ="page-referals-block">
+                      Admin Panel
+                  </div></a>
+
+              <div sec:authorize="hasRole('MANAGER')" class ="page-referals-block-div" >
+                  |
+              </div>
+
+              <a style="text-decoration: none" href="/books" >
+                  <div sec:authorize="hasRole('MANAGER')" class ="page-referals-block">
+                      Manager Panel
+                  </div></a>
+
           </div>
 
 
@@ -38,14 +57,21 @@
 
 
 
-        <div id = "sign-right-block">
+          <div sec:authorize="isAuthenticated()" id = "sign-right-block">
 
-            <div id="user-name-navbar-photo">
-              <img  width="35" height="35" style="border-radius: 50%;"  src="../static/images/user_64.png" alt="user_photo">
-            </div>
-           <div id="user-name-navbar-text" th:text="${userName}">somebody</div>
+              <div id="user-name-navbar-photo">
+                  <img  width="35" height="35" style="border-radius: 50%;" src="/static/images/user_64.png" alt="user_photo">
+              </div>
+              <div id="user-name-navbar-text" th:text="${#authentication.name}">somebody</div>
+          </div>
+
+          <a sec:authorize="isAnonymous()" style="text-decoration: none" href="/auth" >
+          <div  id = "sign-text">
+               Login
+          </div>
+          </a>
+
       </div>
-        </div>
 
 
 
@@ -56,7 +82,7 @@
           <div class="books-block-book-body" th:each="bookObj : ${bookList}">
             <div class="books-block-book-body-info">
                 <div class="books-block-book-body-block-img">
-                    <img class="books-block-book-body-block-img-value"  th:src="${bookObj.getPhoto().getFileAbsolutePath()}"  alt="book photo" >
+                    <img class="books-block-book-body-block-img-value"  src="/static/images/book.png"  alt="book photo" >
                 </div>
                 <div class="books-block-book-body-about">
                     <div>
@@ -76,7 +102,6 @@
                 Click for Download
             </div>
               </a>
-
           </div>
 
 

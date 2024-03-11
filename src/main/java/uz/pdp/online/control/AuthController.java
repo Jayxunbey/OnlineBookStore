@@ -7,6 +7,7 @@ import jakarta.validation.ValidatorContext;
 import jakarta.validation.constraintvalidation.ValidationTarget;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.*;
@@ -30,11 +31,13 @@ public class AuthController {
 
     private final UserDao userDao;
 
-
+    @GetMapping
+    public String hom(ModelAndView modelAndView){
+        return "redirect: /auth/login";
+    }
 
     @GetMapping("/login")
     public String login(Model model){
-//        model.addAttribute("bindingResult");
         model.addAttribute("logdto", new ReqLognObjBody());
         return "login";
     }
@@ -48,21 +51,8 @@ public class AuthController {
 
 
 
-    //    @ResponseBody
-//    @GetMapping("")
-    @GetMapping
-    public String hom(ModelAndView modelAndView){
-
-        return "redirect: /auth/login";
-
-//        modelAndView.setViewName("signup");
-//        modelAndView.addObject("isSignUp",Boolean.TRUE);
-//
-//        return modelAndView;
-    }
-
-
     @PostMapping(value = "/signup")
+
     public String home(@ModelAttribute("dto") @Valid ReqSignObjBody signObj,
                        Errors result, Model model){
 
@@ -82,23 +72,31 @@ public class AuthController {
             return "signup";
         }
 
-        User savedUser = userDao.save(
-                User.builder()
-                        .username(signObj.getUsername())
-                        .email(signObj.getEmail())
-                        .password(signObj.getNew_password())
-                        .build()
-        );
+        if (userDao.getByUserName(signObj.getUsername())!=null) {
+            model.addAttribute("cannotRegister", "Username is already registered");
 
-        if (savedUser==null) {
-            model.addAttribute("cannotRegister", "Cannot Register. May be already you registered");
-            model.addAttribute("signFormValues", signObj);
-            return "signup";
+
+        }
+        else
+        {
+            User savedUser = userDao.save(
+                    User.builder()
+                            .username(signObj.getUsername())
+                            .email(signObj.getEmail())
+                            .password(signObj.getNew_password())
+                            .build()
+            );
+
+            if (savedUser == null) {
+                model.addAttribute("cannotRegister", "Cannot Register. May be already you registered");
+                model.addAttribute("signFormValues", signObj);
+                return "signup";
+            }
         }
 
         ReqLognObjBody lognObjBody = new ReqLognObjBody();
-        lognObjBody.setUsername(savedUser.getUsername());
-        lognObjBody.setPassword(savedUser.getPassword());
+        lognObjBody.setUsername(signObj.getUsername());
+        lognObjBody.setPassword(signObj.getNew_password());
 
         model.addAttribute("logdto", lognObjBody);
         return "login";
@@ -131,7 +129,7 @@ public class AuthController {
 
 
         model.addAttribute("user", user);
-        return "books_page";
+        return "book_upload";
     }
 
     @GetMapping("/kino")

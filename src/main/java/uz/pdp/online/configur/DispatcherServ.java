@@ -19,7 +19,6 @@ public class DispatcherServ extends AbstractAnnotationConfigDispatcherServletIni
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
-
     }
 
     @Override

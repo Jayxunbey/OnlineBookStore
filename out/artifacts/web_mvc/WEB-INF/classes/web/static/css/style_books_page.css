@@ -53,16 +53,22 @@ body{
       
       }
 
-      
+        & a{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: larger;
+            margin-right: 10px;
+        }
+
 
       & #sign-right-block{
         display: flex;
-
-        width: 120px;
+          width: 120px;
         margin-right: 20px;
         flex-direction: row;
 
-        div{
+        &div{
           cursor: pointer;
           font-size: larger;
           
@@ -75,24 +81,22 @@ body{
           align-items: center;
           display: flex;
           justify-content: center;
-          img{
-              width: "15";
+          & img{
+              width: 15px;
               height: auto;
             }
           }
 
           & #user-name-navbar-text{
-            display: flex;
-            justify-content: center;
-
-
-            
-            padding: 0;
-            align-items: center;
-            margin-left: 10px;
-
+              display: flex;
+              justify-content: center;
+              padding: 0;
+              align-items: center;
+              margin-left: 10px;
               font-size:large;
           }
+
+
 
         
     }

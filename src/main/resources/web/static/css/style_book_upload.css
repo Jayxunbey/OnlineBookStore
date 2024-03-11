@@ -53,7 +53,13 @@ body{
       
       }
 
-      
+        & a{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: larger;
+            margin-right: 10px;
+        }
 
       & #sign-right-block{
         display: flex;
