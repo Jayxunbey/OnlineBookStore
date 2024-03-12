@@ -41,7 +41,7 @@
                 <h1 th:text="#{login}">Log in</h1>
               </div>
               <div id="input-values-block-login">
-                <input class="input-form" type="text" th:field="*{username}" name="username" placeholder="Username or Email Address">
+                <input class="input-form" type="text" th:field="*{username}" name="username" placeholder="Username">
                    <p style="background-color: #ffa50f" class="error" th:errors="*{username}"></p>
                 <input class="input-form" type="password"   th:field="*{password}" name="password" placeholder="Password">
                    <p style="background-color: #ffa50f" class="error" th:errors="*{password}"></p>

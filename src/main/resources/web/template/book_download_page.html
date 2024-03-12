@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr"
-  xmlns:th="https://www.thymeleaf.org">
+  xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="utf-8">
     <title>Book Store</title>
     <link rel="stylesheet" href="/static/css/style_book_download_page.css">
 </head>
-<body>
+<body onload="gfg(document.getElementById('static-rating-value').value)">
 <div class="container">
 
     <div class="navbar">
@@ -30,13 +31,19 @@
 
             </div>
         </div>
-        <div id = "sign-right-block">
+        <div sec:authorize="isAuthenticated()" id = "sign-right-block">
 
             <div id="user-name-navbar-photo">
                 <img  width="35" height="35" style="border-radius: 50%;" src="/static/images/user_64.png" alt="user_photo">
             </div>
-            <div id="user-name-navbar-text">somebody</div>
+            <div id="user-name-navbar-text" th:text="${#authentication.name}">somebody</div>
         </div>
+        <a sec:authorize="isAnonymous()" style="text-decoration: none" href="/auth" >
+            <div  id = "sign-text">
+                Login
+            </div>
+        </a>
+
     </div>
 
 
@@ -48,7 +55,7 @@
             <div class="books-block-book-body" th:object="${book}">
                 <div class="books-block-book-body-info">
                     <div class="books-block-book-body-block-img">
-                        <img class="books-block-book-body-block-img-value" th:src="*{getPhoto().getFileAbsolutePath()}" height="250px" style="max-width: 300px;" width="auto"  alt="book photo" >
+                        <img class="books-block-book-body-block-img-value" src="/static/images/book.png" height="250px" style="max-width: 300px;" width="auto"  alt="book photo" >
                     </div>
                     <div class="books-block-book-body-about-down" >
                         <div class="books-block-book-body-about">
@@ -81,10 +88,173 @@
 
         </div>
 
+        <div  class="rating" id="rating">
+
+
+            <form  action="/rating" method="post">
+
+                <input style="display:none;" type="text" name="bookId" th:value="${book.getId()}">
+
+                <button style="display: none;" id="static-rating-value" th:value="${rating.getRate()}"></button>
+                <div class="card">
+                    <div id="rating-top-info">
+                        <h1>Rating</h1>
+                    </div>
+
+                    <div onmouseleave="gfg(document.getElementById('static-rating-value').value)" id="rating-star-info">
+                        <label for="sbmt-btn-1" onmouseover="gfg(1)"
+                               class="star">&#x2605
+                        </label>
+                        <button style="display: none;" id="sbmt-btn-1" name="star" value="1" type="submit"></button>
+
+                        <label for="sbmt-btn-2" onmouseover="gfg(2)"
+                               class="star">&#x2605
+                        </label>
+                        <button style="display: none;" id="sbmt-btn-2" name="star" value="2" type="submit"></button>
+
+                        <label for="sbmt-btn-3" onmouseover="gfg(3)"
+                               class="star">&#x2605
+                        </label>
+                        <button style="display: none;" id="sbmt-btn-3" name="star" value="3" type="submit"></button>
+
+                        <label for="sbmt-btn-4" onmouseover="gfg(4)"
+                               class="star">&#x2605
+                        </label>
+                        <button style="display: none;" id="sbmt-btn-4" name="star" value="4" type="submit"></button>
+
+                        <label for="sbmt-btn-5" onmouseover="gfg(5)"
+                               class="star">&#x2605
+                        </label>
+                        <button style="display: none;" id="sbmt-btn-5" name="star" value="5" type="submit"></button>
+                    </div>
+                    <div id="rating-bottom-info">
+                        <h3 id="output">
+                            Your rating: <span>0</span>/5
+                        </h3>
+                        <h3 id="old-output">
+                            Average: <span th:text="${rating.getAverageOfAll()}">3.4</span>
+                        </h3>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="comments-block">
+
+            <h1 id="comment-title">
+              <span>
+                Comments
+              </span>
+                <div>
+
+                    <label id="add-comment" onclick="add_comment_btn('add')" for="add-btn">
+                        <div  class="edit-block">
+                      <span>
+                        add
+                      </span>
+                            <img width="20" height="20" src="https://img.icons8.com/fluency/48/add--v1.png" alt="pencil"/>                    </div>
+                    </label>
+                    <button id="add-btn" type="submit" name="edit" value="dsd5dsf5-dsd4f-dghtzaf" style="display: none;"></button>
+                </div>
+            </h1>
+
+            <div id="add-comment-block" class="add-comment-block" style="display: none;">
+                <div class="comment-title">
+                    <div class="comment-title-left">
+                  <span class="comment-owner">
+                    Add comment
+                  </span>
+                    </div>
+                </div>
+                <form class="comment-edit-form" action="/add-comment" method="post">
+
+                    <div class="comment-body-text-block">
+                        <textarea id="textarea-block" class="textarea" name="textarea" placeholder="enter your comments..." rows="7" cols="60"></textarea>
+                    </div>
+
+                    <div id="buttons-div-block"  class="buttons-div">
+                        <label onclick="cancel_add_comment('add')" class="btn-label-cancel" for="add-cancel-btn">cancel</label>
+                        <button style="display: none;" type="button" id="add-cancel-btn"></button>
+
+                        <label class="btn-label-submit" for="add-submit-btn">submit</label>
+                        <button style="display: none;" type="submit" id="add-submit-btn"></button>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="comment-body">
+
+                <div class="comment-title">
+                    <div class="comment-title-left">
+                <span class="comment-owner">
+                  Jayxunbey
+                </span>
+
+                        <div>
+                            <label id="edit-btn-id-1" onclick="clicked_edit_btn(1)" for="edit-btn">
+                                <div  class="edit-block">
+                                    <img width="20" height="20" src="https://img.icons8.com/tiny-color/32/pencil.png" alt="pencil"/>                    </div>
+                            </label>
+                            <button id="edit-btn" type="submit" name="edit" value="dsd5dsf5-dsd4f-dghtzaf" style="display: none;"></button>
+                        </div>
+
+                        <form action="/remove-comment" method="get">
+
+                            <label for="remove-btn">
+                                <div class="remove-block">
+                                    <img width="20" height="20" src="https://img.icons8.com/pulsar-gradient/48/delete-forever.png" alt="delete-forever"/>
+                                </div>
+                            </label>
+                            <button id="remove-btn" type="submit" name="comment-id" value="dsd5dsf5-dsd4f-dghtzaf" style="display: none;"></button>
+                        </form>
+
+                    </div>
+
+                    <span class="comment-time">
+                14.24.2014
+              </span>
+
+                </div>
+
+                <form class="comment-edit-form" action="/comment-edit">
+
+                    <div class="comment-body-text-block">
+                <textarea id="textarea-id-1" class="textarea" rows="7" readonly cols="60">
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt laboriosam, sequi alias illo soluta cumque porro autem quia culpa sint, sit tempora! Eos dicta earum facilis quae, fugit quibusdam perspiciatis.
+                </textarea>
+                    </div>
+
+                    <div id="buttons-div-id-1" style="display: none;" class="buttons-div">
+                        <label onclick="clicked_cancel_btn(1)" class="btn-label-cancel" for="cancel-btn">cancel</label>
+                        <button style="display: none;" type="button" id="cancel-btn"></button>
+
+                        <label class="btn-label-submit" for="submit-btn">submit</label>
+                        <button style="display: none;" type="submit" id="submit-btn"></button>
+                    </div>
+
+                </form>
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+        </div>
 
 
     </div>
 
+    <script src="/static/js/for_book_down.js" ></script>
     <div class="footer">
 
         <div id="footer-created-by-jayxunbey">

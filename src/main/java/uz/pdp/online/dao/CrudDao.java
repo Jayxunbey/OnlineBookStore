@@ -9,7 +9,7 @@ public interface CrudDao<T,I> {
     /**
      returns a saved user if added to Database successfully otherwise returns null
       */
-    T getById(I bookId);
+    T getById(I Id);
 
     T update(T t);
 

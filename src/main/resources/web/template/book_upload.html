@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
   <head>
 <!--    <meta charset="utf-8">-->
     <title>Book Store</title>
@@ -36,13 +37,19 @@
 
 
 
-        <div id = "sign-right-block">
+        <div sec:authorize="isAuthenticated()" id = "sign-right-block">
 
             <div id="user-name-navbar-photo">
               <img  width="35" height="35" style="border-radius: 50%;" src="../static/images/user_64.png" alt="user_photo">
             </div>
-           <div id="user-name-navbar-text">somebody</div>
+           <div id="user-name-navbar-text" th:text="${#authentication.name}">somebody</div>
       </div>
+          <a sec:authorize="isAnonymous()" style="text-decoration: none" href="/auth" >
+              <div  id = "sign-text">
+                  Login
+              </div>
+          </a>
+
         </div>
 
       <div class="container-body"  id="container-body">
